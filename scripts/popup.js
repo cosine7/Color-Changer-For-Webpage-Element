@@ -20,7 +20,6 @@ toggleHiddenVisible(result ? cancel : chooseElement);
 
 document.getElementById('website').textContent = url.host;
 // document.getElementById('page').textContent = url.pathname;
-const main = document.getElementById('app');
 
 chooseElement.addEventListener('click', () => {
   chrome.scripting.executeScript({
@@ -30,15 +29,7 @@ chooseElement.addEventListener('click', () => {
   window.close();
 })
 
-function removeHighlightDiv() {
-  const highlight = document.getElementById('color-changer-highlight-div');
-  highlight && highlight.remove();
-}
-
-cancel.addEventListener('click', () => {
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    func: removeHighlightDiv,
-  });
+cancel.addEventListener('click', async () => {
+  await chrome.tabs.sendMessage(tab.id, 'cleanup')
   toggleHiddenVisible(cancel, chooseElement);
 })

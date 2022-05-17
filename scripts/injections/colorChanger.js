@@ -20,21 +20,29 @@ export default () => {
     if (event.key !== 'Escape') {
       return;
     }
-    removeEventsAndHighlight();
+    cleanup();
   }
 
   function click(event) {
-    console.log('clicked');
-    removeEventsAndHighlight();
+    cleanup();
   }
 
-  function removeEventsAndHighlight() {
+  function listener(message, sender, sendResponse) {
+    if (message == 'cleanup') {
+      sendResponse();
+      cleanup();
+    }
+  }
+
+  function cleanup() {
     highlight.remove();
     window.removeEventListener('mouseover', mouseover)
     window.removeEventListener('keydown', keydown)
     window.removeEventListener('click', click)
+    chrome.runtime.onMessage.removeListener(listener)
   }
 
+  chrome.runtime.onMessage.addListener(listener);
   window.addEventListener('mouseover', mouseover)
   window.addEventListener('keydown', keydown)
   window.addEventListener('click', click)
