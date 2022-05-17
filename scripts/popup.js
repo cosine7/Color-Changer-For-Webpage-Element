@@ -10,25 +10,19 @@ function toggleHiddenVisible(...elements) {
   })
 }
 
-async function checkElementChoosingStatus() {
-  await chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message === 'check') {
-      sendResponse(document.getElementById('color-changer-highlight-div') ? true : false);
-    }
-  });
-}
-
-await chrome.scripting.executeScript({
+const { result } = (await chrome.scripting.executeScript({
   target: { tabId: tab.id },
-  function: checkElementChoosingStatus,
-});
-
-const isChoosing = await chrome.tabs.sendMessage(tab.id, 'check');
-toggleHiddenVisible(isChoosing ? cancel : chooseElementBtn);
+  func: () => document.getElementById('color-changer-highlight-div') ? true : false,
+}))[0];
+toggleHiddenVisible(result ? cancel : chooseElementBtn);
 
 document.getElementById('website').textContent = url.host;
 // document.getElementById('page').textContent = url.pathname;
 const main = document.getElementById('app');
+
+function some(event) {
+  console.log('clickedddd');
+}
 
 function chooseElement() {
   const highlight = document.createElement('div');
@@ -57,7 +51,7 @@ function chooseElement() {
 
   window.addEventListener('click', event => {
     // window.open()
-
+    console.log('clickedddd');
   })
 
   document.body.appendChild(highlight);
@@ -66,7 +60,7 @@ function chooseElement() {
 chooseElementBtn.addEventListener('click', () => {
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
-    function: chooseElement,
+    func: chooseElement,
   });
   window.close();
 })
@@ -79,7 +73,7 @@ function removeHighlightDiv() {
 cancel.addEventListener('click', () => {
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
-    function: removeHighlightDiv,
+    func: removeHighlightDiv,
   });
   toggleHiddenVisible(cancel, chooseElementBtn);
 })
