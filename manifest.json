@@ -1,27 +1,33 @@
 {
-    "name": "Color Changer For Webpage Element",
-    "description": "An chrome extension that allow you to change background or foreground color for webpage elements",
-    "version": "1.0",
-    "manifest_version": 3,
-    "background": {
-      "service_worker": "scripts/background.js"
-    },
-    "permissions": ["storage", "activeTab", "scripting", "tabs"],
-    "action": {
-      "default_popup": "public/popup.html",
-      "default_icon": {
-        "16": "/images/icon16.png",
-        "32": "/images/icon.png",
-        "48": "/images/icon48.png",
-        "128": "/images/icon128.png"
-      }
-    },
-    "icons": {
+  "name": "Color Changer For Webpage Element",
+  "description": "An chrome extension that allow you to change background or foreground color for webpage elements",
+  "version": "1.0",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "scripts/background.js"
+  },
+  "permissions": ["storage", "activeTab", "scripting", "tabs"],
+  "action": {
+    "default_popup": "public/popup.html",
+    "default_icon": {
       "16": "/images/icon16.png",
-      "32": "/images/icon32.png",
+      "32": "/images/icon.png",
       "48": "/images/icon48.png",
       "128": "/images/icon128.png"
-    },
-    "options_page": "public/options.html"
-  }
+    }
+  },
+  "icons": {
+    "16": "/images/icon16.png",
+    "32": "/images/icon32.png",
+    "48": "/images/icon48.png",
+    "128": "/images/icon128.png"
+  },
+  "options_page": "public/options.html",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["scripts/content.js"]
+    }
+  ]
+}
   
