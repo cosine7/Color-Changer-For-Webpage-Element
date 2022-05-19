@@ -3,7 +3,7 @@ import showColorChanger from './injections/colorChanger.js';
 async function loadColorChanger() {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
 
-  chrome.scripting.insertCSS({
+  await chrome.scripting.insertCSS({
     target: { tabId: tab.id },
     files: ['styles/colorChanger.css'],
   });

@@ -31,6 +31,7 @@ export default (target) => {
   }
 
   header.addEventListener('mousedown', mousedown);
-
   document.body.appendChild(wrapper);
+  wrapper.style.top = `${window.scrollY + window.innerHeight / 2 - wrapper.offsetHeight / 2}px`;
+  wrapper.style.left = `${window.innerWidth / 2 - wrapper.offsetWidth / 2}px`;
 }
