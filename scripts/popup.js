@@ -30,6 +30,6 @@ cancel.addEventListener('click', async () => {
   const [results] = await chrome.scripting.executeScript({
     target: { tabId: tab.id },
     func: () => document.getElementById('color-changer-highlight-div') ? true : false,
-  })
+  });
   toggleHiddenVisible(results && results.result ? cancel : chooseElement);
 })();

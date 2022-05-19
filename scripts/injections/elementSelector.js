@@ -24,6 +24,7 @@ export default () => {
   }
 
   function click(event) {
+    chrome.runtime.sendMessage('loadColorChanger');
     cleanup();
   }
 
