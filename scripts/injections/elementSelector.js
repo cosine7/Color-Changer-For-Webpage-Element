@@ -24,15 +24,18 @@ export default () => {
   }
 
   function click(event) {
+    event.preventDefault();
+    event.stopPropagation();
     chrome.runtime.sendMessage('loadColorChanger');
     cleanup();
   }
 
   function listener(message, sender, sendResponse) {
-    if (message == 'cleanup') {
-      sendResponse();
-      cleanup();
+    if (message !== 'cleanup') {
+      return;
     }
+    sendResponse();
+    cleanup();
   }
 
   function cleanup() {
