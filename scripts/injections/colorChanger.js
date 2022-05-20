@@ -1,6 +1,9 @@
 export default (identifier) => {
   const targets = [...document.getElementsByClassName(identifier.className)]
+  .filter(element => element.className === identifier.className)
   || [document.getElementById(identifier.id)];
+
+  const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`
   
   const wrapper = document.createElement('div');
   wrapper.id = 'color-changer-wrapper';
@@ -11,9 +14,7 @@ export default (identifier) => {
   contentWrapper.className = 'color-changer-content-wrapper';
   const background = document.createElement('input');
   background.type = 'color';
-  console.log(targets[0]);
-  console.log(window.getComputedStyle(targets[0]).getPropertyValue('background-color'));
-  // background.value = ;
+  background.value = rgb2hex(window.getComputedStyle(targets[0]).getPropertyValue('background-color'));
   background.addEventListener('change', () => {
     targets.forEach(target => {
       target.style.backgroundColor = background.value;

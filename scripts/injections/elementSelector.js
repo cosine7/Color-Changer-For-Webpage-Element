@@ -32,7 +32,6 @@ export default () => {
       return;
     }
     event.stopPropagation();
-    console.log(event.target.className, event.target.id);
     chrome.runtime.sendMessage({
       event: 'loadColorChanger',
       identifier: {
