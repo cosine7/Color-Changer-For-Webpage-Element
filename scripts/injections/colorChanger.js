@@ -4,7 +4,12 @@ export default (target) => {
   const header = document.createElement('div');
   header.textContent = 'Color Changer';
   header.className = 'color-changer-header';
-  wrapper.append(header);
+  const contentWrapper = document.createElement('div');
+  contentWrapper.className = 'color-changer-content-wrapper';
+  const background = document.createElement('input');
+  background.type = 'color';
+  contentWrapper.append(background);
+  wrapper.append(header, contentWrapper);
 
   let startX;
   let startY;
