@@ -15,7 +15,7 @@
     height: max-content;
     box-shadow: 0 0 10px rgba(0, 0, 0, .25)
     0 0 10px rgba(255, 255, 255, 0.25);
-    position: absolute;
+    position: fixed;
     z-index: 9999999;
     background-color: white;
     border-radius: 8px;

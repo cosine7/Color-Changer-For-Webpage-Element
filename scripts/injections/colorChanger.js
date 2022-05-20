@@ -11,7 +11,9 @@ export default (identifier) => {
   contentWrapper.className = 'color-changer-content-wrapper';
   const background = document.createElement('input');
   background.type = 'color';
-  background.value = targets[0].style.backgroundColor;
+  console.log(targets[0]);
+  console.log(window.getComputedStyle(targets[0]).getPropertyValue('background-color'));
+  // background.value = ;
   background.addEventListener('change', () => {
     targets.forEach(target => {
       target.style.backgroundColor = background.value;
@@ -29,10 +31,10 @@ export default (identifier) => {
     startX = event.clientX;
     startY = event.clientY;
 
-    if (top + wrapper.offsetHeight - window.scrollY > window.innerHeight) {
-      top = window.scrollY + window.innerHeight - wrapper.offsetHeight;
-    } else if (top < window.scrollY) {
-      top = window.scrollY;
+    if (top < 0) {
+      top = 0;
+    } else if (top > window.innerHeight - wrapper.offsetHeight) {
+      top = window.innerHeight - wrapper.offsetHeight;
     }
 
     if (left < 0) {
@@ -40,6 +42,7 @@ export default (identifier) => {
     } else if (left > window.innerWidth - wrapper.offsetWidth) {
       left = window.innerWidth - wrapper.offsetWidth;
     }
+
     wrapper.style.top = `${top}px`;
     wrapper.style.left = `${left}px`;
   }
@@ -58,6 +61,6 @@ export default (identifier) => {
 
   header.addEventListener('mousedown', mousedown);
   document.body.appendChild(wrapper);
-  wrapper.style.top = `${window.scrollY + window.innerHeight / 2 - wrapper.offsetHeight / 2}px`;
+  wrapper.style.top = `${window.innerHeight / 2 - wrapper.offsetHeight / 2}px`;
   wrapper.style.left = `${window.innerWidth / 2 - wrapper.offsetWidth / 2}px`;
 }
