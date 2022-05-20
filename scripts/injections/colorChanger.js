@@ -10,16 +10,24 @@ export default (target) => {
   let startY;
 
   function mousemove(event) {
-    // const offsetX = event.clientX - startX;
-    // const offsetY = event.clientY - startY;
-    // startX = event.clientX;
-    // startY = event.clientY;
-    // wrapper.style.top = `${wrapper.offsetTop + offsetY}px`;
-    // wrapper.style.left = `${wrapper.offsetLeft + offsetX}px`;
-    wrapper.style.top = `${wrapper.offsetTop + event.clientY - startY}px`;
-    wrapper.style.left = `${wrapper.offsetLeft + event.clientX - startX}px`;
+    let top = wrapper.offsetTop + event.clientY - startY;
+    let left = wrapper.offsetLeft + event.clientX - startX;
     startX = event.clientX;
     startY = event.clientY;
+
+    if (top + wrapper.offsetHeight - window.scrollY > window.innerHeight) {
+      top = window.scrollY + window.innerHeight - wrapper.offsetHeight;
+    } else if (top < window.scrollY) {
+      top = window.scrollY;
+    }
+
+    if (left < 0) {
+      left = 0;
+    } else if (left > window.innerWidth - wrapper.offsetWidth) {
+      left = window.innerWidth - wrapper.offsetWidth;
+    }
+    wrapper.style.top = `${top}px`;
+    wrapper.style.left = `${left}px`;
   }
 
   function mouseup() {
