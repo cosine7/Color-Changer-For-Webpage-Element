@@ -8,6 +8,9 @@ export default () => {
   highlight.style.pointerEvents = 'none';
 
   function mouseover(event) {
+    if (!event.target.id && !event.target.className) {
+      return;
+    }
     event.stopPropagation();
     const rect = event.target.getBoundingClientRect();
     highlight.style.width = rect.width + "px";
@@ -25,8 +28,17 @@ export default () => {
 
   function click(event) {
     event.preventDefault();
+    if (!event.target.id && !event.target.className) {
+      return;
+    }
     event.stopPropagation();
-    chrome.runtime.sendMessage('loadColorChanger');
+    chrome.runtime.sendMessage({
+      event: 'loadColorChanger',
+      identifier: {
+        id: event.target.id,
+        className: event.target.className,
+      },
+    });
     cleanup();
   }
 

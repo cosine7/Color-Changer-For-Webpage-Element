@@ -1,6 +1,6 @@
 import showColorChanger from './injections/colorChanger.js';
 
-async function loadColorChanger() {
+async function loadColorChanger(identifier) {
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true })
 
   await chrome.scripting.insertCSS({
@@ -11,12 +11,13 @@ async function loadColorChanger() {
   chrome.scripting.executeScript({
     target: { tabId: tab.id },
     func: showColorChanger,
+    args: [identifier],
   });
 }
 
 chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
-  if (message === 'loadColorChanger') {
+  if (message.event === 'loadColorChanger') {
     sendResponse();
-    loadColorChanger();
+    loadColorChanger(message.identifier);
   }
 });

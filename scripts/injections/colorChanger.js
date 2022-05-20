@@ -1,4 +1,7 @@
-export default (target) => {
+export default (identifier) => {
+  const targets = [...document.getElementsByClassName(identifier.className)]
+  || [document.getElementById(identifier.id)];
+  
   const wrapper = document.createElement('div');
   wrapper.id = 'color-changer-wrapper';
   const header = document.createElement('div');
@@ -8,6 +11,12 @@ export default (target) => {
   contentWrapper.className = 'color-changer-content-wrapper';
   const background = document.createElement('input');
   background.type = 'color';
+  background.value = targets[0].style.backgroundColor;
+  background.addEventListener('change', () => {
+    targets.forEach(target => {
+      target.style.backgroundColor = background.value;
+    });
+  })
   contentWrapper.append(background);
   wrapper.append(header, contentWrapper);
 
