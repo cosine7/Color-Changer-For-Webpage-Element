@@ -3,7 +3,9 @@ export default (identifier) => {
   .filter(element => element.className === identifier.className)
   || [document.getElementById(identifier.id)];
 
-  const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`
+
+
+  const rgba2hex = (rgba) => `#${rgba.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+\.{0,1}\d*))?\)$/).slice(1).map((n, i) => (i === 3 ? Math.round(parseFloat(n) * 255) : parseFloat(n)).toString(16).padStart(2, '0').replace('NaN', '')).join('')}`
   
   const wrapper = document.createElement('div');
   wrapper.id = 'color-changer-wrapper';
@@ -14,7 +16,7 @@ export default (identifier) => {
   contentWrapper.className = 'color-changer-content-wrapper';
   const background = document.createElement('input');
   background.type = 'color';
-  background.value = rgb2hex(window.getComputedStyle(targets[0]).getPropertyValue('background-color'));
+  background.value = rgba2hex(window.getComputedStyle(targets[0]).getPropertyValue('background-color'));
   background.addEventListener('change', () => {
     targets.forEach(target => {
       target.style.backgroundColor = background.value;

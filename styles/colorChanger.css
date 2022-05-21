@@ -37,3 +37,21 @@
 #color-changer-wrapper .color-changer-content-wrapper {
     padding: 10px;
 }
+
+.color-changer-content-wrapper input[type="color"] {
+	border: none;
+    padding: 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .4);
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.color-changer-content-wrapper input[type="color"]::-webkit-color-swatch-wrapper {
+	padding: 0;
+    margin: 0;
+}
+
+.color-changer-content-wrapper input[type="color"]::-webkit-color-swatch {
+	border: none;
+}

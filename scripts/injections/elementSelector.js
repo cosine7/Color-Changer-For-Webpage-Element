@@ -11,6 +11,7 @@ export default () => {
     if (!event.target.id && !event.target.className) {
       return;
     }
+    console.log(event.target);
     event.stopPropagation();
     const rect = event.target.getBoundingClientRect();
     highlight.style.width = rect.width + "px";
@@ -27,7 +28,6 @@ export default () => {
   }
 
   function click(event) {
-    event.preventDefault();
     if (!event.target.id && !event.target.className) {
       return;
     }
