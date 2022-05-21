@@ -7,12 +7,14 @@ export default () => {
   highlight.style.zIndex = 9999999;
   highlight.style.pointerEvents = 'none';
 
+  let target;
+
   function mouseover(event) {
     if (!event.target.id && !event.target.className) {
       return;
     }
-    console.log(event.target);
     event.stopPropagation();
+    target = event.target;
     const rect = event.target.getBoundingClientRect();
     highlight.style.width = rect.width + "px";
     highlight.style.height = rect.height + "px";
@@ -28,15 +30,12 @@ export default () => {
   }
 
   function click(event) {
-    if (!event.target.id && !event.target.className) {
-      return;
-    }
-    event.stopPropagation();
+    event.preventDefault();
     chrome.runtime.sendMessage({
       event: 'loadColorChanger',
       identifier: {
-        id: event.target.id,
-        className: event.target.className,
+        id: target.id,
+        className: target.className,
       },
     });
     cleanup();
