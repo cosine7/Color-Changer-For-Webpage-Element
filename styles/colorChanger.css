@@ -32,6 +32,7 @@
     box-sizing: border-box;
     padding: 10px;
     user-select: none;
+    position: relative;
 }
 
 #color-changer-wrapper .color-changer-content-wrapper {
@@ -54,4 +55,22 @@
 
 .color-changer-content-wrapper input[type="color"]::-webkit-color-swatch {
 	border: none;
+}
+
+#color-changer-wrapper .color-changer-header span {
+    color: white;
+    display: inline-block;
+    position: absolute;
+    font-weight: normal;
+    top: 50%;
+    right: 0;
+    padding: 8px;
+    font-size: 30px;
+    transform: translateY(-50%);
+    transition: all .2s;
+    cursor: pointer;
+}
+
+#color-changer-wrapper .color-changer-header span:hover {
+    transform: translateY(-50%) rotateZ(90deg);
 }

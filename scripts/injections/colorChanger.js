@@ -6,14 +6,8 @@ export default (identifier) => {
 
 
   const rgba2hex = (rgba) => `#${rgba.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+\.{0,1}\d*))?\)$/).slice(1).map((n, i) => (i === 3 ? Math.round(parseFloat(n) * 255) : parseFloat(n)).toString(16).padStart(2, '0').replace('NaN', '')).join('')}`
-  
-  const wrapper = document.createElement('div');
-  wrapper.id = 'color-changer-wrapper';
-  const header = document.createElement('div');
-  header.textContent = 'Color Changer';
-  header.className = 'color-changer-header';
-  const contentWrapper = document.createElement('div');
-  contentWrapper.className = 'color-changer-content-wrapper';
+
+
   const background = document.createElement('input');
   background.type = 'color';
   background.value = rgba2hex(window.getComputedStyle(targets[0]).getPropertyValue('background-color'));
@@ -22,7 +16,35 @@ export default (identifier) => {
       target.style.backgroundColor = background.value;
     });
   })
-  contentWrapper.append(background);
+  const foreground = document.createElement('input');
+  foreground.type = 'color';
+  foreground.value = rgba2hex(window.getComputedStyle(targets[0]).getPropertyValue('color'));
+  foreground.addEventListener('change', () => {
+    targets.forEach(target => {
+      target.style.color = foreground.value;
+    });
+  })
+  const backgroundWrapper = document.createElement('div');
+  backgroundWrapper.append('Background: ', background);
+  const foregroundWrapper = document.createElement('div');
+  foregroundWrapper.append('Foreground: ', foreground);
+  const save = document.createElement('button');
+  save.textContent = 'Save';
+  save.className = '';
+  const reset = document.createElement('button');
+  reset.textContent = 'Reset';
+  reset.className = '';
+  const contentWrapper = document.createElement('div');
+  contentWrapper.className = 'color-changer-content-wrapper';
+  contentWrapper.append(backgroundWrapper, foregroundWrapper, reset, save);  
+  const wrapper = document.createElement('div');
+  wrapper.id = 'color-changer-wrapper';
+  const close = document.createElement('span');
+  close.innerHTML = '&times;';
+  const header = document.createElement('div');
+  header.textContent = 'Color Changer';
+  header.className = 'color-changer-header';
+  header.appendChild(close)
   wrapper.append(header, contentWrapper);
 
   let startX;
