@@ -36,10 +36,10 @@ export default identifier => {
   foregroundWrapper.append('Foreground: ', foreground);
   const save = document.createElement('button');
   save.textContent = 'Save';
-  save.className = '';
+  save.className = 'save';
   const reset = document.createElement('button');
   reset.textContent = 'Reset';
-  reset.className = '';
+  reset.className = 'reset';
   const contentWrapper = document.createElement('div');
   contentWrapper.className = 'color-changer-content-wrapper';
   contentWrapper.append(backgroundWrapper, foregroundWrapper, reset, save);
@@ -63,14 +63,14 @@ export default identifier => {
 
     if (top < 0) {
       top = 0;
-    } else if (top > document.body.clientHeight - wrapper.offsetHeight) {
-      top = document.body.clientHeight - wrapper.offsetHeight;
+    } else if (top > window.innerHeight - wrapper.offsetHeight) {
+      top = window.innerHeight - wrapper.offsetHeight;
     }
 
     if (left < 0) {
       left = 0;
-    } else if (left > document.body.clientWidth - wrapper.offsetWidth) {
-      left = document.body.clientWidth - wrapper.offsetWidth;
+    } else if (left > window.innerWidth - wrapper.offsetWidth) {
+      left = window.innerWidth - wrapper.offsetWidth;
     }
 
     wrapper.style.top = `${top}px`;

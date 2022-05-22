@@ -53,13 +53,13 @@ export default () => {
     highlight.remove();
     window.removeEventListener('mouseover', mouseover);
     window.removeEventListener('keydown', keydown);
-    window.removeEventListener('click', click);
+    window.removeEventListener('click', click, true);
     chrome.runtime.onMessage.removeListener(listener);
   }
 
   chrome.runtime.onMessage.addListener(listener);
   window.addEventListener('mouseover', mouseover);
   window.addEventListener('keydown', keydown);
-  window.addEventListener('click', click);
+  window.addEventListener('click', click, true);
   document.body.appendChild(highlight);
 };

@@ -55,6 +55,7 @@ hr {
 
 #cancel:hover {
     background-color: #F56C6C;
+    border-color: #F56C6C;
 }
 
 .hidden {

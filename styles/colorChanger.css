@@ -36,13 +36,12 @@
 }
 
 #color-changer-wrapper .color-changer-content-wrapper {
-    padding: 10px;
+    padding: 20px;
 }
 
 .color-changer-content-wrapper input[type="color"] {
-	border: none;
+	border: 1px solid gray;
     padding: 0;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .4);
     border-radius: 8px;
     overflow: hidden;
     cursor: pointer;
@@ -73,4 +72,51 @@
 
 #color-changer-wrapper .color-changer-header span:hover {
     transform: translateY(-50%) rotateZ(90deg);
+}
+
+#color-changer-wrapper .color-changer-content-wrapper div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: black;
+    margin-bottom: 10px;
+}
+
+#color-changer-wrapper .color-changer-content-wrapper button {
+    outline: none;
+    margin-top: 10px;
+    border-radius: 8px;
+    width: 100%;
+    height: 35px;
+    border-style: solid;
+    border-width: 1px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+#color-changer-wrapper .color-changer-content-wrapper button:hover {
+    color: white;
+}
+
+#color-changer-wrapper .color-changer-content-wrapper .save {
+    border-color: #A0CFFF;
+    color: #409EFF;
+    background-color: #ECF5FF;
+}
+
+#color-changer-wrapper .color-changer-content-wrapper .save:hover {
+    background-color: #409EFF;
+    border-color: #409EFF;
+}
+
+#color-changer-wrapper .color-changer-content-wrapper .reset {
+    border-color: #FAB6B6;
+    color: #F56C6C;
+    background-color: #FEF0F0;
+}
+
+#color-changer-wrapper .color-changer-content-wrapper .reset:hover {
+    background-color: #F56C6C;
+    border-color: #F56C6C;
 }
