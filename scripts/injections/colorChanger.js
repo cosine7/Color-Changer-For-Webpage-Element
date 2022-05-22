@@ -1,12 +1,9 @@
-export default (identifier) => {
+export default identifier => {
   const targets = [...document.getElementsByClassName(identifier.className)]
-  .filter(element => element.className === identifier.className)
+    .filter(element => element.className === identifier.className)
   || [document.getElementById(identifier.id)];
 
-
-
-  const rgba2hex = (rgba) => `#${rgba.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+\.{0,1}\d*))?\)$/).slice(1).map((n, i) => (i === 3 ? Math.round(parseFloat(n) * 255) : parseFloat(n)).toString(16).padStart(2, '0').replace('NaN', '')).join('')}`
-
+  const rgba2hex = rgba => `#${rgba.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+\.{0,1}\d*))?\)$/).slice(1).map((n, i) => (i === 3 ? Math.round(parseFloat(n) * 255) : parseFloat(n)).toString(16).padStart(2, '0').replace('NaN', '')).join('')}`;
 
   const background = document.createElement('input');
   background.type = 'color';
@@ -15,7 +12,7 @@ export default (identifier) => {
     targets.forEach(target => {
       target.style.backgroundColor = background.value;
     });
-  })
+  });
   const foreground = document.createElement('input');
   foreground.type = 'color';
   foreground.value = rgba2hex(window.getComputedStyle(targets[0]).getPropertyValue('color'));
@@ -23,7 +20,7 @@ export default (identifier) => {
     targets.forEach(target => {
       target.style.color = foreground.value;
     });
-  })
+  });
   const backgroundWrapper = document.createElement('div');
   backgroundWrapper.append('Background: ', background);
   const foregroundWrapper = document.createElement('div');
@@ -36,7 +33,7 @@ export default (identifier) => {
   reset.className = '';
   const contentWrapper = document.createElement('div');
   contentWrapper.className = 'color-changer-content-wrapper';
-  contentWrapper.append(backgroundWrapper, foregroundWrapper, reset, save);  
+  contentWrapper.append(backgroundWrapper, foregroundWrapper, reset, save);
   const wrapper = document.createElement('div');
   wrapper.id = 'color-changer-wrapper';
   const close = document.createElement('span');
@@ -44,7 +41,7 @@ export default (identifier) => {
   const header = document.createElement('div');
   header.textContent = 'Color Changer';
   header.className = 'color-changer-header';
-  header.appendChild(close)
+  header.appendChild(close);
   wrapper.append(header, contentWrapper);
 
   let startX;
@@ -58,14 +55,14 @@ export default (identifier) => {
 
     if (top < 0) {
       top = 0;
-    } else if (top > window.innerHeight - wrapper.offsetHeight) {
-      top = window.innerHeight - wrapper.offsetHeight;
+    } else if (top > document.body.clientHeight - wrapper.offsetHeight) {
+      top = document.body.clientHeight - wrapper.offsetHeight;
     }
 
     if (left < 0) {
       left = 0;
-    } else if (left > window.innerWidth - wrapper.offsetWidth) {
-      left = window.innerWidth - wrapper.offsetWidth;
+    } else if (left > document.body.clientWidth - wrapper.offsetWidth) {
+      left = document.body.clientWidth - wrapper.offsetWidth;
     }
 
     wrapper.style.top = `${top}px`;
@@ -88,4 +85,4 @@ export default (identifier) => {
   document.body.appendChild(wrapper);
   wrapper.style.top = `${window.innerHeight / 2 - wrapper.offsetHeight / 2}px`;
   wrapper.style.left = `${window.innerWidth / 2 - wrapper.offsetWidth / 2}px`;
-}
+};

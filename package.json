@@ -1,0 +1,30 @@
+{
+  "name": "colorchangerforwebpageelement",
+  "version": "1.0.0",
+  "description": "A chrome extension that allow users to change background foreground color for webpage elements",
+  "main": "scripts/popup.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cosine7/Color-Changer-For-Webpage-Element.git"
+  },
+  "keywords": [
+    "chrome",
+    "extension",
+    "color",
+    "changer"
+  ],
+  "author": "ChenXiaoLiu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cosine7/Color-Changer-For-Webpage-Element/issues"
+  },
+  "homepage": "https://github.com/cosine7/Color-Changer-For-Webpage-Element#readme",
+  "devDependencies": {
+    "eslint": "^8.16.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0"
+  }
+}

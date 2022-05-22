@@ -1,4 +1,4 @@
-import elementSelector from "./injections/elementSelector.js";
+import elementSelector from './injections/elementSelector.js';
 
 const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 const url = new URL(tab.url);
@@ -10,7 +10,7 @@ function toggleHiddenVisible(...elements) {
   elements.forEach(element => {
     element.classList.toggle('hidden');
     element.classList.toggle('visible');
-  })
+  });
 }
 
 chooseElement.addEventListener('click', () => {
@@ -22,14 +22,14 @@ chooseElement.addEventListener('click', () => {
 });
 
 cancel.addEventListener('click', async () => {
-  await chrome.tabs.sendMessage(tab.id, 'cleanup')
+  await chrome.tabs.sendMessage(tab.id, 'cleanup');
   toggleHiddenVisible(cancel, chooseElement);
 });
 
-(async function () {
+(async () => {
   const [results] = await chrome.scripting.executeScript({
     target: { tabId: tab.id },
-    func: () => document.getElementById('color-changer-highlight-div') ? true : false,
+    func: () => !!document.getElementById('color-changer-highlight-div'),
   });
   toggleHiddenVisible(results && results.result ? cancel : chooseElement);
 })();
