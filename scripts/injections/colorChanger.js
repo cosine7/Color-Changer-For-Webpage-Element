@@ -3,11 +3,20 @@ export default identifier => {
     .filter(element => element.className === identifier.className)
   || [document.getElementById(identifier.id)];
 
-  const rgba2hex = rgba => `#${rgba.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+\.{0,1}\d*))?\)$/).slice(1).map((n, i) => (i === 3 ? Math.round(parseFloat(n) * 255) : parseFloat(n)).toString(16).padStart(2, '0').replace('NaN', '')).join('')}`;
+  function rgbaToHex(rgba) {
+    return `#${rgba
+      .match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+\.{0,1}\d*))?\)$/)
+      .slice(1)
+      .map((num, index) => (index === 3 ? Math.round(parseFloat(num) * 255) : parseFloat(num))
+        .toString(16)
+        .padStart(2, '0')
+        .replace('NaN', ''))
+      .join('')}`;
+  }
 
   const background = document.createElement('input');
   background.type = 'color';
-  background.value = rgba2hex(window.getComputedStyle(targets[0]).getPropertyValue('background-color'));
+  background.value = rgbaToHex(window.getComputedStyle(targets[0]).getPropertyValue('background-color'));
   background.addEventListener('change', () => {
     targets.forEach(target => {
       target.style.backgroundColor = background.value;
@@ -15,7 +24,7 @@ export default identifier => {
   });
   const foreground = document.createElement('input');
   foreground.type = 'color';
-  foreground.value = rgba2hex(window.getComputedStyle(targets[0]).getPropertyValue('color'));
+  foreground.value = rgbaToHex(window.getComputedStyle(targets[0]).getPropertyValue('color'));
   foreground.addEventListener('change', () => {
     targets.forEach(target => {
       target.style.color = foreground.value;
@@ -44,14 +53,13 @@ export default identifier => {
   header.appendChild(close);
   wrapper.append(header, contentWrapper);
 
-  let startX;
-  let startY;
+  const position = {};
 
   function mousemove(event) {
-    let top = wrapper.offsetTop + event.clientY - startY;
-    let left = wrapper.offsetLeft + event.clientX - startX;
-    startX = event.clientX;
-    startY = event.clientY;
+    let top = wrapper.offsetTop + event.clientY - position.y;
+    let left = wrapper.offsetLeft + event.clientX - position.x;
+    position.x = event.clientX;
+    position.y = event.clientY;
 
     if (top < 0) {
       top = 0;
@@ -75,8 +83,8 @@ export default identifier => {
   }
 
   function mousedown(event) {
-    startX = event.clientX;
-    startY = event.clientY;
+    position.x = event.clientX;
+    position.y = event.clientY;
     window.addEventListener('mousemove', mousemove);
     window.addEventListener('mouseup', mouseup);
   }
