@@ -21,18 +21,21 @@
     border-radius: 8px;
     overflow: hidden;
     animation: bounce 0.1s forwards;
+    user-select: none;
 }
 
 #color-changer-wrapper .color-changer-header {
     width: 300px;
+    height: 40px;
+    padding: 0 8px 0 10px;
     background-color: #409EFF;
     color: white;
     cursor: move;
     font-weight: bold;
     box-sizing: border-box;
-    padding: 10px;
-    user-select: none;
-    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 #color-changer-wrapper .color-changer-content-wrapper {
@@ -58,20 +61,19 @@
 
 #color-changer-wrapper .color-changer-header span {
     color: white;
-    display: inline-block;
-    position: absolute;
-    font-weight: normal;
-    top: 50%;
-    right: 0;
-    padding: 8px;
-    font-size: 30px;
-    transform: translateY(-50%);
+    font-weight: bold;
     transition: all .2s;
+    font-size: 25px;
     cursor: pointer;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #color-changer-wrapper .color-changer-header span:hover {
-    transform: translateY(-50%) rotateZ(90deg);
+    transform: rotateZ(90deg);
 }
 
 #color-changer-wrapper .color-changer-content-wrapper div {
