@@ -47,6 +47,7 @@ export default identifier => {
   wrapper.id = 'color-changer-wrapper';
   const close = document.createElement('span');
   close.innerHTML = '&#x2717';
+  close.addEventListener('click', () => wrapper.remove());
   const header = document.createElement('div');
   header.textContent = 'Color Changer';
   header.className = 'color-changer-header';
