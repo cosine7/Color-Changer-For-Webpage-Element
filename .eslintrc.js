@@ -15,6 +15,7 @@ module.exports = {
     'arrow-parens': ['error', 'as-needed'],
     'no-use-before-define': ['error', { functions: false, classes: true, variables: true }],
     'no-param-reassign': ['error', { props: false }],
+    'no-unused-expressions': ['error', { allowShortCircuit: true }],
   },
   globals: {
     chrome: 'readonly',
