@@ -45,7 +45,6 @@
   }
 
   function changeStyle(property, value) {
-    console.log('changing style');
     elements.forEach(element => {
       element.style[property] = value;
     });

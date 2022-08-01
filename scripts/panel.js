@@ -5,9 +5,9 @@ function onSelectionChanged() {
   );
 }
 
-function colorChanged(property, value) {
+function colorChanged(property, element) {
   chrome.devtools.inspectedWindow.eval(
-    `changeStyle('${property}','${value}')`,
+    `changeStyle('${property}','${element.value}')`,
     { useContentScriptContext: true },
   );
 }
@@ -21,8 +21,8 @@ chrome.devtools.panels.elements.onSelectionChanged.addListener(onSelectionChange
 const [header] = document.getElementsByTagName('header');
 const [background, foreground] = document.getElementsByTagName('input');
 
-background.addEventListener('change', () => { colorChanged('backgroundColor', background.value); });
-foreground.addEventListener('change', () => { colorChanged('color', foreground.value); });
+background.addEventListener('change', () => { colorChanged('backgroundColor', background); });
+foreground.addEventListener('change', () => { colorChanged('color', foreground); });
 
 const events = {
   elementChanged({ identifier, color }) {
@@ -34,7 +34,7 @@ const events = {
 
 chrome.runtime.onMessage.addListener(({ event, data }, sender, sendResponse) => {
   sendResponse();
-  events[event] && events[event](data);
+  events[event]?.(data);
 });
 
 chrome.scripting.executeScript({
