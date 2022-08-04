@@ -5,13 +5,6 @@ function onSelectionChanged() {
   );
 }
 
-function colorChanged(property, value) {
-  chrome.devtools.inspectedWindow.eval(
-    `changeStyle('${property}','${value}')`,
-    { useContentScriptContext: true },
-  );
-}
-
 chrome.devtools.panels.elements.createSidebarPane('Color Changer', panel => {
   panel.setPage('public/panel.html');
 });
@@ -20,24 +13,46 @@ chrome.devtools.panels.elements.onSelectionChanged.addListener(onSelectionChange
 
 const [header] = document.getElementsByTagName('header');
 const [background, foreground] = document.getElementsByTagName('input');
+let identifier = null;
 
-background.addEventListener('change', () => { colorChanged('backgroundColor', background.value); });
-foreground.addEventListener('change', () => { colorChanged('color', foreground.value); });
+function colorChanged(property, element) {
+  if (!identifier) {
+    return;
+  }
+  let selector;
+
+  if (identifier.key === 'class') {
+    selector = '.';
+  } else if (identifier.key === 'id') {
+    selector = '#';
+  }
+  chrome.scripting.insertCSS({
+    target: { tabId: chrome.devtools.inspectedWindow.tabId },
+    css: `${selector}${identifier.value}{${property}:${element.value};}`,
+  });
+}
+
+background.addEventListener('change', () => { colorChanged('background-color', background); });
+foreground.addEventListener('change', () => { colorChanged('color', foreground); });
 
 const events = {
-  elementChanged({ identifier, color }) {
+  elementChanged(data) {
+    identifier = data.identifier;
     header.textContent = `${identifier.key}: ${identifier.value}`;
-    background.value = color.background;
-    foreground.value = color.foreground;
+    background.value = data.color.background;
+    foreground.value = data.color.foreground;
   },
 };
 
 chrome.runtime.onMessage.addListener(({ event, data }, sender, sendResponse) => {
+  if (!sender.tab) {
+    return;
+  }
   sendResponse();
-  events[event] && events[event](data);
+  events[event]?.(data);
 });
 
 chrome.scripting.executeScript({
   target: { tabId: chrome.devtools.inspectedWindow.tabId },
-  files: ['scripts/injections/test.js'],
+  files: ['scripts/injection.js'],
 }, onSelectionChanged);
