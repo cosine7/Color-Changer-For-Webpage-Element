@@ -2,6 +2,7 @@
 /* eslint-disable no-unused-vars */
 {
   let elements = [];
+  const identifier = {};
 
   function rgbToHex(rgb) {
     if (rgb === 'rgba(0, 0, 0, 0)') {
@@ -17,8 +18,6 @@
   }
 
   function elementChanged(element) {
-    const identifier = {};
-
     if (element.hasAttribute('id')) {
       identifier.key = 'id';
       identifier.value = element.id;
@@ -45,8 +44,12 @@
   }
 
   function changeStyle(property, value) {
-    elements.forEach(element => {
-      element.style[property] = value;
+    // elements.forEach(element => {
+    //   element.style[property] = value;
+    // });
+    chrome.scripting.insertCSS({
+      target: { tabId: chrome.inspectedWindow.tabId },
+      files: ['styles/colorChanger.css'],
     });
   }
 }
