@@ -16,10 +16,6 @@ const [background, foreground] = document.getElementsByTagName('input');
 let identifier = null;
 
 function colorChanged(property, element) {
-  // chrome.devtools.inspectedWindow.eval(
-  //   `changeStyle('${property}','${element.value}')`,
-  //   { useContentScriptContext: true },
-  // );
   if (!identifier) {
     return;
   }
@@ -27,12 +23,11 @@ function colorChanged(property, element) {
 
   if (identifier.key === 'class') {
     selector = '.';
-  } else {
+  } else if (identifier.key === 'id') {
     selector = '#';
   }
   chrome.scripting.insertCSS({
     target: { tabId: chrome.devtools.inspectedWindow.tabId },
-    // files: ['styles/colorChanger.css'],
     css: `${selector}${identifier.value}{${property}:${element.value};}`,
   });
 }
@@ -50,11 +45,14 @@ const events = {
 };
 
 chrome.runtime.onMessage.addListener(({ event, data }, sender, sendResponse) => {
+  if (!sender.tab) {
+    return;
+  }
   sendResponse();
   events[event]?.(data);
 });
 
 chrome.scripting.executeScript({
   target: { tabId: chrome.devtools.inspectedWindow.tabId },
-  files: ['scripts/injections/test.js'],
+  files: ['scripts/injection.js'],
 }, onSelectionChanged);
