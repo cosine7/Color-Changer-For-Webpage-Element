@@ -19,17 +19,17 @@ function colorChanged(property, element) {
   if (!identifier) {
     return;
   }
-  let selector = '';
+  // let selector = '';
 
-  if (identifier.key === 'class') {
-    selector = '.';
-  } else if (identifier.key === 'id') {
-    selector = '#';
-  }
-  selector += identifier.value;
+  // if (identifier.key === 'class') {
+  //   selector = '.';
+  // } else if (identifier.key === 'id') {
+  //   selector = '#';
+  // }
+  // selector += identifier.value;
   chrome.scripting.insertCSS({
     target: { tabId: chrome.devtools.inspectedWindow.tabId },
-    css: `${selector}{${property}:${element.value};}`,
+    css: `${identifier.value}{${property}:${element.value} !important;}`,
   });
 }
 

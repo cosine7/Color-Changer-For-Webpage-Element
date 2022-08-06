@@ -21,10 +21,10 @@
     const identifier = {};
     if (element.className) {
       identifier.key = 'class';
-      identifier.value = element.className.replaceAll(' ', '.');
-    } else if (element.id) {
+      identifier.value = `${element.tagName}.${element.className.replaceAll(' ', '.')}`;
+    } else if (element.id === 'sdf') {
       identifier.key = 'id';
-      identifier.value = element.id;
+      identifier.value = `${element.tagName}.#${element.id}`;
     } else {
       identifier.key = 'css selector';
       let selector = element.tagName;
