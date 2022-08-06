@@ -15,16 +15,33 @@
   }
 
   function elementChanged(element) {
+    if (!element.offsetParent) {
+      return;
+    }
     const identifier = {};
-    if (element.hasAttribute('id')) {
+    if (element.className) {
+      identifier.key = 'class';
+      identifier.value = element.className.replaceAll(' ', '.');
+    } else if (element.id) {
       identifier.key = 'id';
       identifier.value = element.id;
-    } else if (element.hasAttribute('class')) {
-      identifier.key = 'class';
-      identifier.value = element.className;
     } else {
-      identifier.key = 'tag';
-      identifier.value = element.tagName;
+      identifier.key = 'css selector';
+      let selector = element.tagName;
+      let el = element.parentElement;
+
+      while (el) {
+        // if (el.className) {
+        //   selector = `.${el.className.replaceAll(' ', '.')}>${selector}`;
+        // } else if (el.id) {
+        //   selector = `#${el.id}>${selector}`;
+        // } else {
+        //   selector = `${el.tagName}>${selector}`;
+        // }
+        selector = `${el.tagName}>${selector}`;
+        el = el.parentElement;
+      }
+      identifier.value = selector;
     }
     chrome.runtime.sendMessage({
       event: 'elementChanged',
