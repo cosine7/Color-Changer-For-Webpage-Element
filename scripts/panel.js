@@ -1,3 +1,7 @@
+if (!chrome.devtools.inspectedWindow.tabId) {
+  throw new Error('Stop Script');
+}
+
 function onSelectionChanged() {
   chrome.devtools.inspectedWindow.eval(
     'elementChanged($0)',
@@ -11,10 +15,12 @@ chrome.devtools.panels.elements.createSidebarPane('Color Changer', panel => {
 
 chrome.devtools.panels.elements.onSelectionChanged.addListener(onSelectionChanged);
 
-const [header] = document.getElementsByTagName('header');
-const [background, foreground] = document.getElementsByTagName('input');
+const tab = await chrome.tabs.get(chrome.devtools.inspectedWindow.tabId);
+const url = new URL(tab.url);
+const [website, title] = document.getElementsByTagName('p');
+const [path, background, foreground] = document.getElementsByTagName('input');
 const [reset, save] = document.getElementsByTagName('button');
-
+website.textContent = url.hostname;
 let selector = null;
 const defaultColorCache = {};
 
@@ -22,6 +28,26 @@ reset.addEventListener('click', () => {
   defaultColorCache[selector]?.forEach(cssInjection => {
     chrome.scripting.removeCSS(cssInjection);
   });
+});
+
+save.addEventListener('click', async () => {
+  const key = url.hostname;
+  let obj = await chrome.storage.local.get(key);
+  if (!obj) {
+    obj = {};
+  }
+  if (!obj[key]) {
+    obj[key] = {};
+  }
+  const pathKey = path.value ? path.value : '*';
+  if (!obj[key][pathKey]) {
+    obj[key][pathKey] = {};
+  }
+  if (!obj[key][pathKey][selector]) {
+    obj[key][pathKey][selector] = {};
+  }
+  obj[key][pathKey][selector].foreground = foreground.value;
+  chrome.storage.local.set(obj);
 });
 
 function colorChanged(property, color) {
@@ -42,12 +68,12 @@ foreground.addEventListener('change', () => { colorChanged('color', foreground.v
 const events = {
   elementChanged(data) {
     selector = data.selector;
-    header.textContent = `css selector: ${selector}`;
+    title.textContent = `css selector: ${selector}`;
     if (!defaultColorCache[selector]) {
       defaultColorCache[selector] = [];
     }
     background.value = data.color.background;
-    foreground.value = data.color.background;
+    foreground.value = data.color.foreground;
   },
 };
 

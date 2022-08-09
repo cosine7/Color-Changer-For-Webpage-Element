@@ -1,5 +1,3 @@
-import elementSelector from './injections/elementSelector.js';
-
 const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 const url = new URL(tab.url);
 document.getElementById('website').textContent = url.host;
@@ -12,14 +10,6 @@ function toggleHiddenVisible(...elements) {
     element.classList.toggle('visible');
   });
 }
-
-chooseElement.addEventListener('click', () => {
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    func: elementSelector,
-  });
-  window.close();
-});
 
 cancel.addEventListener('click', async () => {
   await chrome.tabs.sendMessage(tab.id, 'cleanup');
