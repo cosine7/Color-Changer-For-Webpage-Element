@@ -18,16 +18,13 @@
     if (!element.offsetParent) {
       return;
     }
-    const identifier = {};
+    let selector;
     if (element.className) {
-      identifier.key = 'class';
-      identifier.value = `${element.tagName}.${element.className.replaceAll(' ', '.')}`;
-    } else if (element.id === 'sdf') {
-      identifier.key = 'id';
-      identifier.value = `${element.tagName}.#${element.id}`;
+      selector = `${element.tagName}.${element.className.replaceAll(' ', '.')}`;
+    } else if (element.id) {
+      selector = `${element.tagName}.#${element.id}`;
     } else {
-      identifier.key = 'css selector';
-      let selector = element.tagName;
+      selector = element.tagName;
       let el = element.parentElement;
 
       while (el) {
@@ -41,12 +38,11 @@
         selector = `${el.tagName}>${selector}`;
         el = el.parentElement;
       }
-      identifier.value = selector;
     }
     chrome.runtime.sendMessage({
       event: 'elementChanged',
       data: {
-        identifier,
+        selector,
         color: {
           background: rgbToHex(window.getComputedStyle(element).getPropertyValue('background-color')),
           foreground: rgbToHex(window.getComputedStyle(element).getPropertyValue('color')),

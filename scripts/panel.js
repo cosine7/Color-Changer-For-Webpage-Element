@@ -15,43 +15,39 @@ const [header] = document.getElementsByTagName('header');
 const [background, foreground] = document.getElementsByTagName('input');
 const [reset, save] = document.getElementsByTagName('button');
 
-let identifier = null;
-let cssInjection = null;
+let selector = null;
+const defaultColorCache = {};
 
 reset.addEventListener('click', () => {
-  if (cssInjection) {
+  defaultColorCache[selector]?.forEach(cssInjection => {
     chrome.scripting.removeCSS(cssInjection);
-  }
+  });
 });
 
-function colorChanged(property, element) {
-  if (!identifier) {
+function colorChanged(property, color) {
+  if (!selector) {
     return;
   }
-  // let selector = '';
-
-  // if (identifier.key === 'class') {
-  //   selector = '.';
-  // } else if (identifier.key === 'id') {
-  //   selector = '#';
-  // }
-  cssInjection = {
+  const cssInjection = {
     target: { tabId: chrome.devtools.inspectedWindow.tabId },
-    css: `${identifier.value}{${property}:${element.value} !important;}`,
+    css: `${selector}{${property}:${color} !important;}`,
   };
-  // selector += identifier.value;
+  defaultColorCache[selector]?.push(cssInjection);
   chrome.scripting.insertCSS(cssInjection);
 }
 
-background.addEventListener('change', () => { colorChanged('background-color', background); });
-foreground.addEventListener('change', () => { colorChanged('color', foreground); });
+background.addEventListener('change', () => { colorChanged('background-color', background.value); });
+foreground.addEventListener('change', () => { colorChanged('color', foreground.value); });
 
 const events = {
   elementChanged(data) {
-    identifier = data.identifier;
-    header.textContent = `${identifier.key}: ${identifier.value}`;
+    selector = data.selector;
+    header.textContent = `css selector: ${selector}`;
+    if (!defaultColorCache[selector]) {
+      defaultColorCache[selector] = [];
+    }
     background.value = data.color.background;
-    foreground.value = data.color.foreground;
+    foreground.value = data.color.background;
   },
 };
 
