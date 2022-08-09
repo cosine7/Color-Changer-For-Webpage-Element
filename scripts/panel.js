@@ -62,8 +62,8 @@ function colorChanged(property, color) {
   chrome.scripting.insertCSS(cssInjection);
 }
 
-background.addEventListener('change', () => { colorChanged('background-color', background.value); });
-foreground.addEventListener('change', () => { colorChanged('color', foreground.value); });
+background.addEventListener('input', () => { colorChanged('background-color', background.value); });
+foreground.addEventListener('input', () => { colorChanged('color', foreground.value); });
 
 const events = {
   elementChanged(data) {
