@@ -13,7 +13,16 @@ chrome.devtools.panels.elements.onSelectionChanged.addListener(onSelectionChange
 
 const [header] = document.getElementsByTagName('header');
 const [background, foreground] = document.getElementsByTagName('input');
+const [reset, save] = document.getElementsByTagName('button');
+
 let identifier = null;
+let cssInjection = null;
+
+reset.addEventListener('click', () => {
+  if (cssInjection) {
+    chrome.scripting.removeCSS(cssInjection);
+  }
+});
 
 function colorChanged(property, element) {
   if (!identifier) {
@@ -26,11 +35,12 @@ function colorChanged(property, element) {
   // } else if (identifier.key === 'id') {
   //   selector = '#';
   // }
-  // selector += identifier.value;
-  chrome.scripting.insertCSS({
+  cssInjection = {
     target: { tabId: chrome.devtools.inspectedWindow.tabId },
     css: `${identifier.value}{${property}:${element.value} !important;}`,
-  });
+  };
+  // selector += identifier.value;
+  chrome.scripting.insertCSS(cssInjection);
 }
 
 background.addEventListener('change', () => { colorChanged('background-color', background); });
