@@ -19,20 +19,20 @@ const tab = await chrome.tabs.get(chrome.devtools.inspectedWindow.tabId);
 const url = new URL(tab.url);
 const [website, title] = document.getElementsByTagName('p');
 const [path, background, foreground] = document.getElementsByTagName('input');
-const [reset, save] = document.getElementsByTagName('button');
+const [resetBgColor, resetColor, save] = document.getElementsByTagName('button');
 website.textContent = url.hostname;
 let selector = null;
 const defaultColorCache = {};
 
-reset.addEventListener('click', () => {
-  if (!defaultColorCache[selector]) {
+function removeInjectedCSS(property) {
+  if (!selector || !defaultColorCache[selector] || !defaultColorCache[selector][property]) {
     return;
   }
-  // if ()
-  defaultColorCache[selector]?.forEach(cssInjection => {
-    chrome.scripting.removeCSS(cssInjection);
-  });
-});
+  chrome.scripting.removeCSS(defaultColorCache[selector][property]);
+}
+
+resetBgColor.addEventListener('click', () => { removeInjectedCSS('background-color'); });
+resetColor.addEventListener('click', () => { removeInjectedCSS('color'); });
 
 save.addEventListener('click', async () => {
   const key = url.hostname;
@@ -62,11 +62,9 @@ function colorChanged(property, color) {
     target: { tabId: chrome.devtools.inspectedWindow.tabId },
     css: `${selector}{${property}:${color} !important;}`,
   };
-  if (defaultColorCache[selector][property]) {
-    chrome.scripting.removeCSS(defaultColorCache[selector][property]);
-  }
-  defaultColorCache[selector][property] = cssInjection;
   chrome.scripting.insertCSS(cssInjection);
+  removeInjectedCSS(property);
+  defaultColorCache[selector][property] = cssInjection;
 }
 
 background.addEventListener('input', () => { colorChanged('background-color', background.value); });
@@ -76,7 +74,7 @@ const events = {
   elementChanged(data) {
     selector = data.selector;
     title.textContent = `css selector: ${selector}`;
-    defaultColorCache[selector] = defaultColorCache[selector] || [];
+    defaultColorCache[selector] = defaultColorCache[selector] || {};
     background.value = data.color.background;
     foreground.value = data.color.foreground;
   },
