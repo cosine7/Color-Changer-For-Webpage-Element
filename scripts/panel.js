@@ -25,6 +25,10 @@ let selector = null;
 const defaultColorCache = {};
 
 reset.addEventListener('click', () => {
+  if (!defaultColorCache[selector]) {
+    return;
+  }
+  // if ()
   defaultColorCache[selector]?.forEach(cssInjection => {
     chrome.scripting.removeCSS(cssInjection);
   });
@@ -58,7 +62,10 @@ function colorChanged(property, color) {
     target: { tabId: chrome.devtools.inspectedWindow.tabId },
     css: `${selector}{${property}:${color} !important;}`,
   };
-  defaultColorCache[selector]?.push(cssInjection);
+  if (defaultColorCache[selector][property]) {
+    chrome.scripting.removeCSS(defaultColorCache[selector][property]);
+  }
+  defaultColorCache[selector][property] = cssInjection;
   chrome.scripting.insertCSS(cssInjection);
 }
 
@@ -69,9 +76,7 @@ const events = {
   elementChanged(data) {
     selector = data.selector;
     title.textContent = `css selector: ${selector}`;
-    if (!defaultColorCache[selector]) {
-      defaultColorCache[selector] = [];
-    }
+    defaultColorCache[selector] = defaultColorCache[selector] || [];
     background.value = data.color.background;
     foreground.value = data.color.foreground;
   },
