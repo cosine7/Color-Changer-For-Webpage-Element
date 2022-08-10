@@ -54,6 +54,10 @@ main button:hover {
   background-color: #E6A23C;
   border-color: #E6A23C;
 }
+main button:active {
+  background-color: #b88230;
+  border-color: #b88230;
+}
 button {
   border: 1px solid #a0cfff;
   outline: none;
@@ -71,4 +75,8 @@ button:hover {
   color: white;
   background-color: #409eff;
   border-color: #409eff;
+}
+button:active {
+  background-color: #337ecc;
+  border-color: #337ecc;
 }
