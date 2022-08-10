@@ -1,4 +1,6 @@
-if (!chrome.devtools.inspectedWindow.tabId) {
+const { tabId } = chrome.devtools.inspectedWindow;
+
+if (!tabId) {
   throw new Error('Stop Script');
 }
 
@@ -15,7 +17,7 @@ chrome.devtools.panels.elements.createSidebarPane('Color Changer', panel => {
 
 chrome.devtools.panels.elements.onSelectionChanged.addListener(onSelectionChanged);
 
-const tab = await chrome.tabs.get(chrome.devtools.inspectedWindow.tabId);
+const tab = await chrome.tabs.get(tabId);
 const url = new URL(tab.url);
 const [website, title] = document.getElementsByTagName('p');
 const [path, background, foreground] = document.getElementsByTagName('input');
@@ -59,7 +61,7 @@ function colorChanged(property, color) {
     return;
   }
   const cssInjection = {
-    target: { tabId: chrome.devtools.inspectedWindow.tabId },
+    target: { tabId },
     css: `${selector}{${property}:${color} !important;}`,
   };
   chrome.scripting.insertCSS(cssInjection);
@@ -84,11 +86,10 @@ chrome.runtime.onMessage.addListener(({ event, data }, sender, sendResponse) => 
   if (!sender.tab) {
     return;
   }
-  sendResponse();
-  events[event]?.(data);
+  sendResponse(events[event]?.(data));
 });
 
 chrome.scripting.executeScript({
-  target: { tabId: chrome.devtools.inspectedWindow.tabId },
+  target: { tabId },
   files: ['scripts/injection.js'],
 }, onSelectionChanged);
