@@ -104,8 +104,8 @@ const events = {
         return;
       }
       const colors = selectors[selector];
-      savedBgColor.textContent = colors['background-color'] ? colors['background-color'] : 'null';
-      savedColor.textContent = colors.color ? colors.color : 'null';
+      savedBgColor.textContent = colors?.['background-color'] ? colors['background-color'] : 'null';
+      savedColor.textContent = colors?.color ? colors.color : 'null';
       path.value = pathKey;
     });
   },
