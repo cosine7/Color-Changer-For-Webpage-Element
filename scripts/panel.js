@@ -1,19 +1,11 @@
 const { tabId } = chrome.devtools.inspectedWindow;
 
-if (!tabId) {
-  throw new Error('Stop Script');
-}
-
 function onSelectionChanged() {
   chrome.devtools.inspectedWindow.eval(
     'elementChanged($0)',
     { useContentScriptContext: true },
   );
 }
-
-chrome.devtools.panels.elements.createSidebarPane('Color Changer', panel => {
-  panel.setPage('public/panel.html');
-});
 
 chrome.devtools.panels.elements.onSelectionChanged.addListener(onSelectionChanged);
 
