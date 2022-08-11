@@ -11,7 +11,7 @@
 <body>
   <header>
     <p></p>
-    <input type="text" placeholder="path">
+    Path: <input type="text" placeholder="Default path is /" value="/">
     <hr>
     <p></p>
   </header>
@@ -20,15 +20,29 @@
     <div>
       <span>background:</span>
       <input type="color">
-      <button>reset</button>
+      <button class="reset">reset</button>
+      <button class="save">save</button>
     </div>
     <div>
       <span>foreground:</span>
       <input type="color">
-      <button>reset</button>
+      <button class="reset">reset</button>
+      <button class="save">save</button>
     </div>
   </main>
   <hr>
-  <button>save</button>
+  <footer>
+    <p>Saved Colors for This Element:</p>
+    <div>
+      <span>background:</span>
+      <span id="saved-bg-color">null</span>
+      <button class="delete">delete</button>
+    </div>
+    <div>
+      <span>foreground:</span>
+      <span id="saved-color">null</span>
+      <button class="delete">delete</button>
+    </div>
+  </footer>
 </body>
 </html>
