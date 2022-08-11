@@ -26,17 +26,6 @@ const defaultColorCache = {};
 const saved = (await chrome.storage.local.get(hostname)) || {};
 saved[hostname] = saved[hostname] || {};
 
-Object.entries(saved[hostname]).some(([pathKey, selectors]) => {
-  const hasPath = pathname.startsWith(pathKey);
-  if (hasPath && selector) {
-    const colors = selectors[selector];
-    savedBgColor.textContent = colors['background-color'] ? colors['background-color'] : 'null';
-    savedColor.textContent = colors.color ? colors.color : 'null';
-    path.value = pathKey;
-  }
-  return hasPath;
-});
-
 function removeInjectedCSS(property) {
   if (!selector || !defaultColorCache[selector] || !defaultColorCache[selector][property]) {
     return;
@@ -47,7 +36,7 @@ function removeInjectedCSS(property) {
 resetBgColor.addEventListener('click', () => { removeInjectedCSS('background-color'); });
 resetColor.addEventListener('click', () => { removeInjectedCSS('color'); });
 
-function save(property, value) {
+function save(property, value, span) {
   if (!selector) {
     return;
   }
@@ -56,10 +45,11 @@ function save(property, value) {
   saved[hostname][pathKey][selector] = saved[hostname][pathKey][selector] || {};
   saved[hostname][pathKey][selector][property] = value;
   chrome.storage.local.set(saved);
+  span.textContent = value;
 }
 
-saveBgColor.addEventListener('click', () => { save('background-color', background.value); });
-saveColor.addEventListener('click', () => { save('color', foreground.value); });
+saveBgColor.addEventListener('click', () => { save('background-color', background.value, savedBgColor); });
+saveColor.addEventListener('click', () => { save('color', foreground.value, savedColor); });
 
 function colorChanged(property, color) {
   if (!selector) {
@@ -95,11 +85,11 @@ function deleteSaved(property, input) {
   });
   delete saved[hostname][pathKey][selector][property];
   chrome.storage.local.set(saved);
-  input.value = 'null';
+  input.textContent = 'null';
 }
 
-deleteBgColor.addEventListener('click', () => { deleteSaved('background-color', deleteBgColor); });
-deleteColor.addEventListener('click', () => { deleteSaved('color', deleteColor); });
+deleteBgColor.addEventListener('click', () => { deleteSaved('background-color', savedBgColor); });
+deleteColor.addEventListener('click', () => { deleteSaved('color', savedColor); });
 
 const events = {
   elementChanged(data) {
@@ -108,6 +98,16 @@ const events = {
     defaultColorCache[selector] = defaultColorCache[selector] || {};
     background.value = data.color.background;
     foreground.value = data.color.foreground;
+
+    Object.entries(saved[hostname]).forEach(([pathKey, selectors]) => {
+      if (!pathname.startsWith(pathKey)) {
+        return;
+      }
+      const colors = selectors[selector];
+      savedBgColor.textContent = colors['background-color'] ? colors['background-color'] : 'null';
+      savedColor.textContent = colors.color ? colors.color : 'null';
+      path.value = pathKey;
+    });
   },
 };
 
