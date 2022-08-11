@@ -61,7 +61,7 @@ span {
   display: inline-block;
   width: 100px;
 }
-header:last-child {
+header :last-child {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
