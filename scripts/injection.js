@@ -20,7 +20,7 @@
     }
     let selector;
     if (element.className) {
-      selector = `${element.tagName}.${element.className.replaceAll(' ', '.')}`;
+      selector = `${element.tagName}.${[...element.classList].join('.')}`;
     } else if (element.id) {
       selector = `${element.tagName}.#${element.id}`;
     } else {
@@ -29,7 +29,7 @@
 
       while (el) {
         if (el.className) {
-          selector = `${el.tagName}.${el.className.replaceAll(' ', '.')}>${selector}`;
+          selector = `${el.tagName}.${[...el.classList].join('.')}>${selector}`;
           break;
         }
         if (el.id) {
