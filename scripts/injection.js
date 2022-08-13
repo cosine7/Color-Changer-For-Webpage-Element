@@ -28,13 +28,14 @@
       let el = element.parentElement;
 
       while (el) {
-        // if (el.className) {
-        //   selector = `.${el.className.replaceAll(' ', '.')}>${selector}`;
-        // } else if (el.id) {
-        //   selector = `#${el.id}>${selector}`;
-        // } else {
-        //   selector = `${el.tagName}>${selector}`;
-        // }
+        if (el.className) {
+          selector = `${el.tagName}.${el.className.replaceAll(' ', '.')}>${selector}`;
+          break;
+        }
+        if (el.id) {
+          selector = `${el.tagName}.#${el.id}>${selector}`;
+          break;
+        }
         selector = `${el.tagName}>${selector}`;
         el = el.parentElement;
       }
