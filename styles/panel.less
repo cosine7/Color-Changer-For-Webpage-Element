@@ -1,5 +1,52 @@
+.theme-dark {
+    --bg-primary: #202124;
+    --bg-secondary: #494C50;
+    --text-primary: #D9D9D9;
+    --border-primary: #4C4D4F;
+    --yellow-1: #E6A23C;
+    --yellow-2: #7D5B28;
+    --yellow-3: #292218;
+    --yellow-active: #ebb563;
+    --red-1: #F56C6C;
+    --red-2: #854040;
+    --red-3: #2B1D1D;
+    --red-active: #f78989;
+    --blue-1: #409EFF;
+    --blue-2: #2A598A;
+    --blue-3: #18222C;
+    --blue-active: #66b1ff;
+}
+
+.theme-light {
+    --bg-primary: white;
+    --bg-secondary: #CACDD1;
+    --text-primary: #202124;
+    --border-primary: #DCDFE6;
+    --yellow-1: #E6A23C;
+    --yellow-2: #f3d19e;
+    --yellow-3: #fdf6ec;
+    --yellow-active: #b88230;
+    --red-1: #F56C6C;
+    --red-2: #FAB6B6;
+    --red-3: #FEF0F0;
+    --red-active: #c45656;
+    --blue-1: #409eff;
+    --blue-2: #a0cfff;
+    --blue-3: #ecf5ff;
+    --blue-active: #337ecc;
+}
+
 html, body {
     font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+hr {
+    background-color: var(--bg-secondary);
+    border-style: none;
+    height: 1px;
+    margin: 10px 0;
 }
 
 button {
@@ -15,55 +62,55 @@ button {
 }
 
 .reset {
-    border-color: #f3d19e;
-    color: #E6A23C;
-    background-color: #fdf6ec;
+    border-color: var(--yellow-2);
+    color: var(--yellow-1);
+    background-color: var(--yellow-3);
     margin: 0 15px;
 
     &:hover {
         color: white;
-        background-color: #E6A23C;
-        border-color: #E6A23C;
+        background-color: var(--yellow-1);
+        border-color: var(--yellow-1);
     }
 
     &:active {
-        background-color: #b88230;
-        border-color: #b88230;
+        background-color: var(--yellow-active);
+        border-color: var(--yellow-active);
     }
 }
 
 .save {
-    border-color: #a0cfff;
-    color: #409eff;
-    background-color: #ecf5ff;
+    border-color: var(--blue-2);
+    color: var(--blue-1);
+    background-color: var(--blue-3);
 
     &:hover {
         color: white;
-        background-color: #409eff;
-        border-color: #409eff;
+        background-color: var(--blue-1);
+        border-color: var(--blue-1);
     }
 
     &:active {
-        background-color: #337ecc;
-        border-color: #337ecc;
+        background-color: var(--blue-active);
+        border-color: var(--blue-active);
     }
 }
 
 .delete {
-    border-color: #FAB6B6;
-    color: #F56C6C;
-    background-color: #FEF0F0;
+    border-color: var(--red-2);
+    color: var(--red-1);
+    background-color: var(--red-3);
     margin: 0 15px;
 
     &:hover {
         color: white;
-        background-color: #F56C6C;
-        border-color: #F56C6C;
+        background-color: var(--red-1);
+        border-color: var(--red-1);
     }
 
     &:active {
-        background-color: #c45656;
-        border-color: #c45656;
+        background-color: var(--red-active);
+        border-color: var(--red-active);
     }
 }
 
@@ -77,6 +124,15 @@ header {
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+    }
+
+    input {
+        background-color: transparent;
+        border: 1px solid var(--border-primary);
+        border-radius: 4px;
+        color: var(--text-primary);
+        padding: 0 5px;
+        outline: none;
     }
 }
 
@@ -99,6 +155,7 @@ main {
         border-radius: 4px;
         padding: 0;
         cursor: pointer;
+        border-color: var(--border-primary);
 
         &::-webkit-color-swatch-wrapper {
             display: flex;

@@ -1,3 +1,13 @@
+function switchTheme(theme) {
+  document.body.className = `theme-${theme}`;
+}
+
+switchTheme(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+  switchTheme(e.matches ? 'dark' : 'light');
+});
+
 const { tabId } = chrome.devtools.inspectedWindow;
 
 function onSelectionChanged() {
