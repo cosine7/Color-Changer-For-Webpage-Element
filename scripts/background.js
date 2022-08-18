@@ -17,8 +17,5 @@ const events = {
 };
 
 chrome.runtime.onMessage.addListener(({ event, data }, sender, sendResponse) => {
-  if (!sender.tab) {
-    return;
-  }
-  sendResponse(events[event]?.(data, sender.tab.id));
+  sender.tab && sendResponse(events[event]?.(data, sender.tab.id));
 });

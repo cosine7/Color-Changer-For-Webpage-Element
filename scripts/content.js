@@ -6,7 +6,6 @@
     if (!item || !item[host]) {
       return;
     }
-    console.log(item);
     chrome.runtime.sendMessage({
       event: 'insertCSS',
       data: {

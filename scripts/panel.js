@@ -122,10 +122,7 @@ const events = {
 };
 
 chrome.runtime.onMessage.addListener(({ event, data }, sender, sendResponse) => {
-  if (!sender.tab) {
-    return;
-  }
-  sendResponse(events[event]?.(data));
+  sender.tab && sendResponse(events[event]?.(data));
 });
 
 chrome.scripting.executeScript({

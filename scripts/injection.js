@@ -14,6 +14,10 @@
       .join('')}`;
   }
 
+  function getColor(element, property) {
+    return rgbToHex(window.getComputedStyle(element).getPropertyValue(property));
+  }
+
   function elementChanged(element) {
     if (!element.offsetParent) {
       return;
@@ -45,8 +49,8 @@
       data: {
         selector,
         color: {
-          background: rgbToHex(window.getComputedStyle(element).getPropertyValue('background-color')),
-          foreground: rgbToHex(window.getComputedStyle(element).getPropertyValue('color')),
+          background: getColor(element, 'background-color'),
+          foreground: getColor(element, 'color'),
         },
       },
     });
