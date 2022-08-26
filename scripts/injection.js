@@ -44,6 +44,8 @@
         el = el.parentElement;
       }
     }
+    // eslint-disable-next-line no-useless-escape
+    selector = selector.replaceAll(/[:\[\]]/g, s => `\\${s}`);
     chrome.runtime.sendMessage({
       event: 'elementChanged',
       data: {
