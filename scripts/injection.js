@@ -26,7 +26,7 @@
     if (element.className) {
       selector = [element.tagName, ...element.classList].join('.');
     } else if (element.id) {
-      selector = `${element.tagName}.#${element.id}`;
+      selector = `${element.tagName}#${element.id}`;
     } else {
       selector = element.tagName;
       let el = element.parentElement;
@@ -37,19 +37,18 @@
           break;
         }
         if (el.id) {
-          selector = `${el.tagName}.#${el.id}>${selector}`;
+          selector = `${el.tagName}#${el.id}>${selector}`;
           break;
         }
         selector = `${el.tagName}>${selector}`;
         el = el.parentElement;
       }
     }
-    // eslint-disable-next-line no-useless-escape
-    selector = selector.replaceAll(/[:\[\]]/g, s => `\\${s}`);
     chrome.runtime.sendMessage({
       event: 'elementChanged',
       data: {
-        selector,
+        // eslint-disable-next-line no-useless-escape
+        selector: selector.replaceAll(/[:\[\]]/g, s => `\\${s}`),
         color: {
           background: getColor(element, 'background-color'),
           foreground: getColor(element, 'color'),
